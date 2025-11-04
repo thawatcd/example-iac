@@ -51,6 +51,12 @@ Phase 4: User Story 2 - Module consumption (P2) [US2]
  - [X] T020 [US2] Add example composition in `examples/same-rg/main.tf` to instantiate storage, ai multi-service, and cognitive search into the created resource group - examples/same-rg/main.tf
  - [X] T021 [US2] Add outputs in the example workspace to expose the three resource ids and names - examples/same-rg/outputs.tf
 
+ - [X] T032 [Foundational] Add `scripts/generate-plan-artifact.sh` that runs `terraform plan -out=plan.tfplan` and `terraform show -json plan.tfplan > plan.json` for local/CI usage; document attaching plan.json to PRs - scripts/generate-plan-artifact.sh
+ - [X] T033 [Foundational] Add automated secrets-scan script and pre-commit instructions to detect plaintext secrets or committed `.tfstate` files - scripts/secrets-scan.sh
+ - [X] T034 [Foundational] Convert optional Terratest scaffold into concrete unit/integration test tasks and add example tests for name formatting and tag presence - tests/integration/test_name_and_tags_suite
+
+ - [X] T036 [CI] Add CI docs and RBAC helper script demonstrating required GitHub secrets and Azure RBAC steps - infra/ci/README.md, infra/ci/create-rbac.sh
+
 Phase 5: Polish & Cross-Cutting Concerns
 
  - [X] T022 [P] Add `terraform fmt` and `terraform validate` check instructions for local runs and a small helper script `scripts/local-validate.sh` - scripts/local-validate.sh
