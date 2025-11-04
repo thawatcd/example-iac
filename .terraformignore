@@ -1,0 +1,11 @@
+# Ignore Terraform local cache and stateful files
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.tmp

@@ -1,0 +1,66 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    paths:
+      - 'examples/same-rg/**'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }} # optional when using federated identity mapping
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+
+      - name: Install az CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Allocate running number (CI)
+        id: alloc
+        run: |
+          chmod +x scripts/allocate-running-number.sh
+          NUMBER=$(scripts/allocate-running-number.sh --storage-account "$TF_STATE_STORAGE_ACCOUNT" --container "$TF_STATE_CONTAINER" --blob "running_counter.txt")
+          echo "running_number=$NUMBER" >> $GITHUB_OUTPUT
+        env:
+          TF_STATE_STORAGE_ACCOUNT: ${{ secrets.TF_STATE_STORAGE_ACCOUNT }}
+          TF_STATE_CONTAINER: ${{ secrets.TF_STATE_CONTAINER }}
+
+      - name: Terraform fmt
+        working-directory: examples/same-rg
+        run: terraform fmt -check
+
+      - name: Terraform init
+        working-directory: examples/same-rg
+        run: terraform init -backend-config="storage_account_name=${{ secrets.TF_STATE_STORAGE_ACCOUNT }}" -backend-config="container_name=${{ secrets.TF_STATE_CONTAINER }}"
+
+      - name: Terraform validate
+        working-directory: examples/same-rg
+        run: terraform validate
+
+      - name: Terraform plan
+        working-directory: examples/same-rg
+        run: |
+          terraform plan -out=plan.tfplan -var="running_number=${{ steps.alloc.outputs.running_number }}"
+          terraform show -json plan.tfplan > plan.json
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: examples/same-rg/plan.json
