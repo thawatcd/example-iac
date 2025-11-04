@@ -31,6 +31,14 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
+Gates (derived from `.specify/memory/constitution.md`):
+
+- Infrastructure must use modular Terraform modules (check: module usage or plan scope).
+- Remote state backend must be configured for the target environment (check: backend config or remote state reference).
+- No plaintext secrets in plan/spec files (check: variable definitions and references to Key Vault).
+- Naming and tagging policy applied in resource plans (check: expected tags present in plan diff).
+- CI/CD pipeline must produce a plan artifact and run lint/validation (check: CI config or pipeline steps).
+
 [Gates determined based on constitution file]
 
 ## Project Structure

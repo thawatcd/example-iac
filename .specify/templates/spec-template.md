@@ -5,6 +5,17 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+## Constitution Alignment
+
+The specification MUST include these infrastructure governance items when relevant:
+
+- Terraform modules to use or create (with version or tag).
+- Remote state backend choice and configuration plan (Azure Storage or Terraform Cloud).
+- Secrets handling approach (Azure Key Vault integration or equivalent).
+- Environment isolation model (subscriptions, resource groups, or workspaces).
+- CI/CD gating and required approvals for protected environments.
+
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--

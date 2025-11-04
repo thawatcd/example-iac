@@ -54,6 +54,16 @@ description: "Task list template for feature implementation"
 
 ---
 
+### IaC Foundational Tasks (Terraform on Azure)
+
+- [ ] T00A Pin Terraform CLI and AzureRM provider versions in repository
+- [ ] T00B Configure remote state backend (Azure Storage Blob) with container and locking
+- [ ] T00C Establish Key Vault integration patterns and example secret reference
+- [ ] T00D Add CI pipeline steps: fmt, validate, tflint, plan artifact upload
+- [ ] T00E Create shared module registry layout and module publishing process
+
+---
+
 ## Phase 2: Foundational (Blocking Prerequisites)
 
 **Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
